@@ -1,0 +1,216 @@
+html{
+    height: 100%;
+}
+hr{
+    position: absolute;
+    width: 100%;
+    bottom: 30px;
+    margin: 10px;
+}
+footer{
+    position: absolute;
+    margin-left: 45%;
+    bottom: 0px;
+}
+
+#container {
+    position:absolute;
+    top: 50px;
+    bottom: 0px;
+    text-align:center;
+    width: 100% ;
+}
+
+#inner-container {
+    position: absolute;
+    background: #767676;
+    top : 10px;
+    bottom: 50px;
+    left: 10px;
+    right: 10px;
+    text-align: left;
+}
+
+#tree-container {
+    position: absolute;
+    top:  0px;
+    left: 0px;
+    bottom: 200px;
+    width: 200px;
+<!-- height: 100%; -->
+    overflow:auto;
+    background: #f0f0f0;
+}
+#tree-container-wrapper {
+    position: absolute;
+    top:  0px;
+    left: 0px;
+    bottom: 200px;
+    width: 200px;
+    <!-- height: 100%; -->
+    overflow:auto;
+    background: #f0f0f0;
+}
+#userlist-container {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 200px;
+    height: 200px;
+    overflow:auto;
+    background: #fffff0;
+}
+
+#editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: left;
+}
+
+#editor-container {
+    position: absolute;
+    top:  0px;
+    height: 70%;
+    margin-left: 0px;
+    margin-right: 0px;
+    right:200px;
+    left:200px;
+    background: white;
+}
+
+#chat-container {
+    position: absolute;
+    top:  0px;
+    right: 0px;
+    bottom: 0px;
+    width: 200px;
+    height: 100%;
+    overflow:auto;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#eaeaea), to(#ffffff));
+}
+
+#console-container{
+    position: absolute;
+    bottom: 0px;
+    left: 200px;
+    height: 30%;
+    right: 200px;
+    background: #323232;
+}
+
+.disabled-link,
+.disabled-link:visited ,
+.disabled-link:active,
+.disabled-link:hover {
+    background-color:#d9d9d9 !important;
+    color:#aaa !important;
+    cursor: default;
+    text-decoration: none;
+}
+.disabled-link > a{
+    color:#aaa !important;
+    cursor: default;
+    background: transparent;
+}
+
+#ProgressContainer {
+    width: 396px;
+    height: 36px;
+    background: #F8F8F8;
+    margin-top: 14px;
+    border: 1px solid #E8E8E8;
+    border-top: 1px solid #D8D8D8;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    padding: 2px;
+}
+
+#ProgressBar {
+    height: 100%;
+    width: 0%;
+
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    background: -webkit-gradient( linear, left top, left bottom, from(#c6c6c6), color-stop(0.50, #b7b7b7), to(#000000));
+}
+
+#UploadBox {
+    background: #FFF;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -150px;
+    height: 200px;
+    width: 400px;
+    border: 1px solid #DFDFDF;
+
+    -webkit-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 16px 0px rgba(0,0,0,0.2);
+
+    -webkit-border-radius: 11px;
+    -moz-border-radius: 11px;
+    border-radius: 11px;
+}
+
+.ui-pnotify-text{
+    word-break:break-all;
+}
+
+.ace_marker-layer .myMarker {
+    position: absolute;
+    z-index: 50;
+    background: rgb(255, 124, 78);
+    opacity: 0.3;
+}
+
+.cursor-follower{
+    width:3px;
+    height:10px;
+    background: red;
+    position:absolute;
+    display: none
+}
+.cursor-outOfSightIndicator{
+    width:10;
+    height:10;
+    display: none;
+    position:absolute;
+    border-right: transparent 10px solid;
+    border-left: transparent 10px solid; width: 0px;
+    z-index: 50;
+}
+.cursor-outOfSightIndicator.up{
+    border-top: transparent 10px solid; width: 0px;
+    border-bottom: #ff6699 10px solid;
+}
+.cursor-outOfSightIndicator.down{
+    border-top: #ff6699 10px solid;
+    border-bottom: transparent 10px solid; height: 0px;
+}
+
+#toolBox{
+    z-index: 50;
+    padding: 10px;
+    margin: 10px;
+    opacity: 0.7;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #0f0f0f;
+}
+
+.user-item{
+    background-color: #fffff0;
+}
+.user-item:hover{
+    background-color: #a0ffff;
+}

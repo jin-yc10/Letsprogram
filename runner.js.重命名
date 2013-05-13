@@ -1,0 +1,163 @@
+module.exports = Runner;
+
+var MAX_RUN_TIME = 1024;
+var MAX_OUT_LENGTH = 1024;
+
+var timers = require('timers');
+var spawn = require('child_process').spawn;
+var util = require('util');
+var fs = require('fs');
+var prefix = 'tmp';
+var cwd = process.cwd();
+
+function Runner(type, src){
+    if (!(this instanceof Runner)) return new Runner(type, src);
+	this.src = src;
+	this.path = prefix + '/' + new Date().getTime() + '.' + type;
+	this.clean = [this.path];
+	var that = this;
+	switch(type){
+		case 'js':
+			this.script  = [
+				{cmd:cwd + '/bin/node', args:[this.path], start:true, filter:function(data){
+					return data.replace(new RegExp(cwd + '/' + that.path + ':', 'gm'), '');
+				}}
+			];
+			break;
+		case 'py':
+			this.script = [
+				{cmd:cwd + '/bin/python', args:[this.path], start:true, filter:function(data){
+					return data.replace(new RegExp('File "' + that.path + '", ', 'gm'), '');
+				}}
+			];
+			this.clean.push(this.path + '.pyc');
+			break;
+		case 'c':
+			this.script = [
+				{cmd:'gcc', args:['-o', this.path + '.out', this.path], filter:function(data){
+					return data.replace(new RegExp(that.path + ':', 'gm'), '');
+				}},
+				{cmd:this.path + '.out', args:[], start:true}
+			];
+			this.clean.push(this.path + '.out');
+			break;
+		case 'cpp':
+			this.script = [
+				{cmd:'g++', args:['-o', this.path + '.out', this.path], filter:function(data){
+					return data.replace(new RegExp(that.path + ':', 'gm'), '');
+				}},
+				{cmd:this.path + '.out', args:[], start:true}
+			];
+			this.clean.push(this.path + '.out');
+			break;
+	}
+	this.ready = this.script ? true : false;
+};
+
+util.inherits(Runner, require('events').EventEmitter);
+
+Runner.prototype.run = function(callback){
+	if(!this.ready){
+		return callback({err:'not supported'});
+	}
+	var that = this;
+	fs.writeFile(this.path, this.src, function(err){
+		if(err){
+			return callback({err:err});
+		}
+
+		function clean(err){
+			for(var i in that.clean){
+				fs.unlink(that.clean[i], function(){});
+			}
+			callback({err:err});
+		}
+
+		function step(){
+			if(that.script.length > 0){
+				var s = that.script.shift();
+				that.child = spawn(s.cmd, s.args);
+				if(s.start){
+					that.emit('start');
+					that.timer = timers.setTimeout(function(){
+						if(that.child){
+							that.child.kill('SIGTERM');
+						}
+						that.timer = null;
+					}, MAX_RUN_TIME);
+					that.outLength = 0;
+				}
+				that.child.stdout.on('data', function(data){
+					if(s.start){
+						that.outLength += data.length;
+						if(that.outLength > MAX_OUT_LENGTH){
+							if(that.child){
+								that.child.kill('SIGTERM');
+							}
+							return;
+						}
+					}
+					data = data.toString();
+					if(s.filter){
+						data = s.filter(data);
+					}
+					that.emit('stdout', data);
+				});
+				that.child.stderr.on('data', function(data){
+					if(s.start){
+						that.outLength += data.length;
+						if(that.outLength > MAX_OUT_LENGTH){
+							if(that.child){
+								that.child.kill('SIGTERM');
+							}
+							return;
+						}
+					}
+					data = data.toString();
+					if(s.filter){
+						data = s.filter(data);
+					}
+					that.emit('stderr', data);
+				});
+				that.child.on('error', function(err){
+					return clean({err:err});
+				});
+				that.child.on('exit', function(code, signal){
+					that.child = null;
+					if(s.start && that.timer){
+						timers.clearTimeout(that.timer);
+					}
+					if(signal){
+						return clean({signal:signal});
+					}
+					if(code){
+						return clean({code:code});
+					}
+					if(that.script.length > 0){
+						return step();
+					}
+					return clean({code:code});
+				});
+			}
+		};
+		return step();
+	});
+};
+
+Runner.prototype.stdin = function(data, callback) {
+	if(!this.child){
+		return callback('no stdin');
+	}
+	this.child.stdin.resume();
+	if(!this.child.stdin.write(data, function(){
+		return callback(null);	
+	})){
+		return callback('buffer full');
+	}
+};
+
+Runner.prototype.kill = function(signal){
+	if(this.child){
+		this.child.kill(signal || 'SIGTERM');
+	}
+};

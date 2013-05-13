@@ -1,0 +1,38 @@
+<script>
+function onClickProj(event){
+    $.get("/search/"+"haha");
+    return true;
+}
+function onClick(event){
+    $.post("/search", {
+        content: $("searchtarget").val()
+    });
+    return true;
+}
+</script>
+<form class="form-horizontal" method="get">
+    <fieldset>
+        <div class="page-header">
+          <h2>Discover on Let's Program</h2>
+        </div>
+        <div class="control-group">
+            <div class="controls">
+                <input name="s" type="text" placeholder="Leave blank to see all."
+                 class="input-xlarge" id="searchtarget">
+                <div class="btn-group">
+                  <button name="proj" value="1" class="btn">Projects...</button>
+                  <button name="user" value="1" class="btn">People...</button>
+                </div>
+            </div>
+        </div>
+        <div class="page-header">
+        </div>
+        <%if (projs){%>
+            <%- partial('viewprojs', {projs:projs}) %>
+            <%- partial('showpage',{pagenum:projPageNum,
+                                    pageTotal:pageTotal,
+                                    url:url})%>
+        <%}%>
+
+    </fieldset>
+</form>

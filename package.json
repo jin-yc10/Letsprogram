@@ -1,0 +1,21 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+      "amdefine" : "*",
+    "express": "3.1.0",
+    "ejs": "*",
+    "express-partials": "*",
+    "mongodb": "*" ,
+    "connect-mongodb": "*",
+    "connect-flash":"*",
+    "socket.io" : "*",
+    "webrtc.io": "latest",
+    "webrtc.io-client": "latest",
+    "ws": "latest"
+  }
+}

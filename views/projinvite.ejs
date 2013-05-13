@@ -1,0 +1,45 @@
+<form class="form-horizontal" method="get">
+    <fieldset>
+        <h1>
+            <%=proj.name%><small> · <%=proj.lang%> ·</small>
+        </h1>
+        <p>&nbsp</p>
+
+        <%- partial('projnav', {
+                active:"invite",
+                applys:applys,
+                proj:proj,
+                isAdmin:isAdmin}) %>
+
+        <div class="control-group">
+            <div class="controls">
+                <input name="s" type="text" placeholder="Leave blank to see all people."
+                class="input-xlarge" id="searchtarget">
+                <hidden id="target" value="<%=s%>">
+                <div class="btn-group">
+                  <button name="user" value="1" class="btn btn-primary">
+                    Find the one!</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-header">
+        </div>
+        <%if (users){%>
+            <%if (users.length>0){%>
+                <%-partial('viewusers', {
+                    users:users,
+                    kick:false,
+                    invite:true,
+                    proj:proj,
+                    userPageNum:userPageNum,
+                    pageTotal:pageTotal,
+                    url:url
+                }) %>
+            <%}else{%>
+                 <h2><small>Uh-oh. No such person. </small></h2>
+            <%}%>
+        <%}%>
+
+    </fieldset>
+</form>

@@ -1,0 +1,61 @@
+<script>
+function onClickSubmit(i){
+    $.post("/application");
+    return true;
+};
+</script>
+<form class="form-vertical" method="get">
+    <fieldset>
+        <h1>
+            <%=proj.name%><small> · <%=proj.lang%> ·</small>
+        </h1>
+    <p>&nbsp</p>
+
+    <%- partial('projnav', {
+        active:"application",
+        applys:true,
+        isAdmin:isAdmin,
+        proj:proj}) %>
+
+    <% applys.forEach(function(apply, index) {
+      if (index % 3 == 0) { %>
+        <div class="row">
+      <%} %>
+            <div class="span4">
+                <h3><a href="/u/<%= apply.user %>"><%= apply.user %></a>
+                    said: </h3>
+                <p><%=apply.message%></p>
+                <p><h5><small><%=
+                    apply.time.toString().substring(0,24) %></small></h5>
+                </p>
+                <div class="controls">
+                    <div class="btn-group">
+                        <!--<a class="btn btn-success" href="javascript:;"
+                        onclick="onClickSubmit('<%=apply%>');">Join us!</a>
+                        <button class="btn" value="<%=index%>"
+                         onclick="onClickIgnore(event);">Ignore</button>--!>
+                        <button class="btn btn-success" name="confirm" value=<%=index%>>Join us!</button>
+                        <button class="btn" name="ignore" value=<%=index%>>Ignore</button>
+                    </div>
+                </div>
+            </div>
+      <% if (index % 3 == 2) { %>
+        </div><!-- end row -->
+      <% } %>
+    <%}) %>
+
+    <% if (applys.length % 3 != 0) { %>
+      </div><!-- end row -->
+    <%} %>
+
+    <% if (applys.length==0){%>
+      <h2><small>No one has shown interest yet.
+      <a href="/p/invite/<%=proj.id%>"> Ask someone in?</a></small></h2>
+    <%} else {%>
+        <%- partial('showpage',{
+                    pagenum:applyPageNum,
+                    pageTotal:pageTotal,
+                    url:url})%>
+    <%}%>
+    </fieldset>
+</form>

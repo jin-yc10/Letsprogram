@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %>-Let's program!</title>
+    <link rel='stylesheet' href='/stylesheets/bootstrap.css' />
+    <style type="text/css">
+        body{
+            padding-top:60px;
+            padding-bottom:40px;
+        }
+        #personal_figure{
+            display:block;
+            relative:right;
+            padding-left:480px;
+            margin-top:5px;
+            width:30px;
+            height:30px;
+        }
+    </style>
+    <link href="/stylesheets/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="/">Let's Program</a>
+            <div class="nav-collapse">
+                <ul class="nav">
+
+                  <% if (pagenum==1) { %>
+                  <li class="active"><a href="/"><i class="icon-home icon-black"></i>Home</a></li>
+                  <% } else { %>
+                  <li><a href="/"><i class="icon-home icon-black"></i>Home</a></li>
+                  <%}%>
+
+                    <% if (!user) { %>
+                        <% if (pagenum==2) { %>
+                            <li><a href="/login">Sign in</a></li>
+                            <li class="active"><a href="/reg">Sign up</a></li>
+                        <% } else if (pagenum==3) { %>
+                            <li class="active"><a href="/login">Sign in</a></li>
+                            <li><a href="/reg">Sign up</a></li>
+                        <%} else {%>
+                            <li><a href="/login">Sign in</a></li>
+                            <li><a href="/reg">Sign up</a></li>
+                        <%}%>
+                    <% } else { %>
+                        <li>
+                            <ul class="nav nav-tabs">
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown">
+                                        Projects<b class="caret"></b>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li class="nav-header">My Projects</li>
+                                        <li><a href="/u/<%= user.name %>">All my Projects</a></li>
+                                        <li><a href="/search/">Search for Project</a></li>
+                                        <li><a href="/newproj">New Project...</a></li>
+                                        <li class="divider"></li>
+                                        <li class="nav-header">About Me</li>
+                                        <li><a href="/file-upload">Change Avator</a><li>
+                                        <li><a href="/modification">Change Password</a><li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li><a href="/logout">Sign out</a></li>
+                    <%}%>
+
+                </ul>
+            </div>
+
+                              <span id="personal_figure">
+                          <%if(user) {%>
+                               <img src="<%=user.avatar%>">
+                                                  <%}%>
+                                   </span>
+
+
+
+
+
+
+        </div>
+    </div>
+  </div>
+
+  <div id="container" class="container">
+     <% if (success) { %>
+        <div class="alert alert-success">
+        <a class="close" data-dismiss="alert" href="#">&times;</a>
+        <%= success %>
+        </div>
+     <% } %>
+     <% if (error) { %>
+        <div class="alert alert-error fade in">
+        <a class="close" data-dismiss="alert" href="#">&times;</a>
+        <%= error %>
+        </div>
+     <% } %>
+    <%- body %>
+    <hr />
+    <footer>
+        <p><a href="/">Let's Program Team</a> 2013</p>
+    </footer>
+  </div>
+
+  </body>
+  <script src="/javascripts/jquery.js"></script>
+  <script src="/javascripts/bootstrap.js"></script>
+</html>

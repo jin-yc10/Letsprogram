@@ -1,0 +1,38 @@
+<%
+  var index=url.indexOf("page");
+  if (index!=-1)
+    url=(url.slice(0,index-1));
+  var i;
+  for(i=0;i<url.length;i++)
+  {
+    if(url[i]=="?")
+      break;
+  }
+  if(i==url.length)
+    url+="?"
+  else
+  {
+    url+="&"
+  }
+%>
+<div class="pagination pagination-centered">
+    <ul>
+        <% if (pagenum==1) {%>
+            <li class="disabled"><a>&laquo;</a></li>
+        <%}else{%>
+            <li><a href="<%=url+"page="+(parseInt(pagenum)-1)%>">&laquo;</a></li>
+        <%}%>
+        <% for (var i=1;i<=pageTotal;i++){%>
+            <% if (i==pagenum) {%>
+                <li class="active"><a><%=i%></a></li>
+            <%}else{%>
+                <li><a href="<%=url+"page="+i%>"><%=i%></a></li>
+            <%}%>
+        <%}%>
+        <% if (pagenum==pageTotal) {%>
+            <li class="disabled"><a>&raquo;</a></li>
+        <%}else{%>
+            <li><a href="<%=url+"page="+(parseInt(pagenum)+1)%>">&raquo;</a></li>
+        <%}%>
+    </ul>
+</div>

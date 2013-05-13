@@ -1,0 +1,12 @@
+<form class="form-vertical" method="post">
+    <fieldset>
+        <div class="page-header">
+          <h1><%=user.name%><small> 's projects</small></h1>
+        </div>
+        <%- partial('viewprojs', {projs:projs}) %>
+        <%- partial('showpage',{
+            pagenum:projPageNum,
+            pageTotal:pageTotal,
+            url:url})%>
+    </fieldset>
+</form>

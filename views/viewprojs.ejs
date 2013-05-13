@@ -1,0 +1,31 @@
+<% projs.forEach(function(proj, index) {
+  if (index % 4 == 0) { %>
+    <div class="row">
+  <%} %>
+        <div class="span3">
+            <div class="well">
+            <h3><a href="/p/<%= proj.id %>"><%= proj.name %></a>
+                <small>· <%=proj.lang%> ·</small></h3>
+            <p><h5><small>last update at : <%=
+                proj.lastUpdate.toString().substring(0,24) %></small></h5><p>
+            <p>lead by: <a href="/u/<%=proj.admin%>"><%=proj.admin%></a></p>
+            <p>members:
+                <%proj.member.forEach(function(m){%>
+                    <a href="/u/<%=m%>"><%=m%></a>,
+                <%})%>
+            </p>
+            </div>
+        </div>
+  <% if (index % 4 == 3) { %>
+    </div><!-- end row -->
+  <% } %>
+<%}) %>
+
+<% if (projs.length % 4 != 0) { %>
+  </div><!-- end row -->
+<%} %>
+
+<% if (projs.length==0){%>
+  <h2><small>You are currently not in any project.
+    Get involved right now!</small></h2>
+<%} %>

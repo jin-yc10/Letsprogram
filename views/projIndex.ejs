@@ -1,0 +1,26 @@
+<form class="form-horizontal" method="post">
+    <fieldset>
+        <h1>
+            <%=proj.name%><small> · <%=proj.lang%> ·</small>
+        </h1>
+    <p>&nbsp</p>
+
+    <%- partial('projnav', {
+        active:"index",
+        applys:applys,
+        proj:proj,
+        isAdmin:isAdmin}) %>
+
+    <div class="well">
+        <p><h4>last update at : <%=proj.lastUpdate.toString().substring(0,24) %>
+            </h4></p>
+        <p><h4>lead by: <a href="/u/<%=proj.admin%>"><%=proj.admin%>
+                        </a></h4></p>
+        <p><h4>members:
+                <%proj.member.forEach(function(m){%>
+                    <a href="/u/<%=m.name%>"><%=m%></a>,
+                <%})%>
+            </h4></p>
+    </div>
+    </fieldset>
+</form>

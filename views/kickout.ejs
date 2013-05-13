@@ -1,0 +1,39 @@
+<script>
+function onClickSubmit(i){
+    $.post("/application");
+    return true;
+};
+</script>
+<form class="form-horizontal" method="get">
+    <fieldset>
+        <h1>
+            <%=proj.name%><small> · <%=proj.lang%> ·</small>
+        </h1>
+    <p>&nbsp</p>
+
+    <%- partial('projnav', {
+        active:"kick",
+        applys:applys,
+        isAdmin:isAdmin,
+        proj:proj}) %>
+
+    <%  var users=proj.member;
+        var pageTotal=Math.ceil(users.length/8);
+        users=users.slice(8*(userPageNum-1),8*userPageNum);%>
+
+    <%- partial('viewusers', {
+        users:users,
+        kick:true,
+        invite:null,
+        userPageNum:userPageNum,
+        pageTotal:pageTotal,
+        url:url
+        }) %>
+
+    <% if (proj.member.length==0){%>
+      <h2><small>Huh, no one in the team. </small></h2>
+      <a href="/p/invite/<%=proj.id%>"> Ask someone in?</a>
+    <%} %>
+
+    </fieldset>
+</form>

@@ -1,0 +1,43 @@
+<ul class="nav nav-tabs">
+      <%if(active=="index"){%>
+      <li class="active">
+      <%}else{%>
+      <li>
+      <%}%>
+        <a href="/p/<%=proj.id%>">Basics</a>
+      </li>
+
+      <%if(active=="editor"){%>
+      <li class="active">
+      <%}else{%>
+      <li>
+      <%}%>
+      <a href="/p/editor/<%=proj.id%>">Start Working</a></li>
+
+      <%if(applys && isAdmin){%>
+        <%if(active=="application"){%>
+        <li class="active">
+        <%}else{%>
+        <li>
+        <%}%>
+        <a href="/p/application/<%=proj.id%>"><b>Someone's eager to join!</b></a></li>
+      <%}%>
+
+      <%if(isAdmin){%>
+          <%if(active=="invite"){%>
+          <li class="active">
+          <%}else{%>
+          <li>
+          <%}%>
+          <a href="/p/invite/<%=proj.id%>">Ask someone to join!</a></li>
+      <%}%>
+
+      <%if(isAdmin){%>
+          <%if(active=="kick"){%>
+              <li class="active">
+          <%}else{%>
+              <li>
+          <%}%>
+          <a href="/p/kickout/<%=proj.id%>">Kick out...</a></li>
+      <%}%>
+</ul>

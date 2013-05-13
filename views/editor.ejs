@@ -1,0 +1,127 @@
+<script type='text/javascript'>
+    var project_id = "<%=proj%>";
+    var user_name = "<%=user.name%>";
+    console.log(project_id);
+    console.log(user_name);
+</script>
+<script src="/javascripts/jquery.js" type="text/javascript" charset="utf-8"></script>
+
+<script src="/javascripts/lib/jquery.ui.position.js" type="text/javascript"></script>
+<script src="/javascripts/lib/socket.io.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/lib/webrtc.io.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/cursorHandler.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/markerhandler.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/communicate.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/filetree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/compile.js" type="text/javascript" charset="utf-8"></script>
+<link href="/stylesheets/jqueryFileTree.css" rel="stylesheet" type="text/css" media="screen">
+<script src="/javascripts/lib/jqueryFileTree.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/lib/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="/javascripts/editor.js" type="text/javascript" charset="utf-8"></script>
+<link href="/stylesheets/editor.css" rel="stylesheet" />
+<script src="/javascripts/lib/bootstrap-contextmenu.js" type="text/javascript"></script>
+<script src="/javascripts/lib/jquery-ui-1.10.2.custom.min.js" type="text/javascript"></script>
+<link href="/stylesheets/jquery-ui-1.10.2.custom.css" rel="stylesheet" type="text/css" />
+<script src="/javascripts/lib/jquery.pnotify.min.js" type="text/javascript"></script>
+<link href="/stylesheets/jquery.pnotify.default.icons.css" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/jquery.pnotify.default.css" rel="stylesheet" type="text/css" />
+
+<!--<p>project id:<%=proj.id%></p>-->
+<!--<p>user name:<%=user.name%></p>-->
+<style>
+    .data-title : before {
+        content: attr(data-menutitle);
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        background: #292929;
+        padding: 2px;
+
+        font-family: Verdana, Arial, Helvetica, sans-serif;
+        font-size: 11px;
+        font-weight: bold;
+    }
+    .data-title : first-child {
+        margin-top: 20px;
+    }
+
+    .ui-pnotify.stack-bottomright {
+        /* These are just CSS default values to reset the pnotify CSS. */
+        right: auto;
+        top: auto;
+        left: auto;
+        bottom: auto;
+    }
+</style>
+
+<div id="context-menu" style = 'z-index: 1000'>
+    <ul class="dropdown-menu" role="menu" style = "text-align: left">
+        <li class='context-operator'><a tabindex="-1" >Add new file</a></li>
+        <li class='context-operator'><a tabindex="-1" >Add new directory</a></li>
+        <li class='context-operator'><a tabindex="-1" >Import files</a></li>
+        <li class='context-operator'><a tabindex="-1" >Delete file</a></li>
+        <li class='context-operator file-disable'><a tabindex="-1" >Delete directory</a></li>
+        <li class="divider"></li>
+        <li class='context-file-operator folder-disable'><a tabindex="-1" >Open</a></li>
+        <li class='context-file-operator'><a tabindex="-1" >Cut</a></li>
+        <li class='context-file-operator'><a tabindex="-1" >Copy</a></li>
+        <li class='context-file-operator'><a tabindex="-1" >Delete</a></li>
+    </ul>
+</div>
+<div id="dialog-form-newFile" title="Create new file">
+    <form>
+        <fieldset>
+            <label for="newFileName">Name</label>
+            <input type="text" name="name" id="newFileName" class="text ui-widget-content ui-corner-all" />
+        </fieldset>
+    </form>
+</div>
+<div id="dialog-form-newDirectory" title="Create new Directory">
+    <form>
+        <fieldset>
+            <label for="newFileDirName">Name</label>
+            <input type="text" name="name" id="newFileDirName" class="text ui-widget-content ui-corner-all" />
+        </fieldset>
+    </form>
+</div>
+<div id="dialog-form-importFile" title="import file">
+    <div id="UploadBox">
+        <h2>File Uploader</h2>
+        <div>
+            <span id='UploadArea'>
+				<label for="FileBox">Choose A File: </label><input type="file" id="FileBox" multiple="multiple"><br>
+				<label for="NameBox">Name: </label><input type="text" id="NameBox"><br>
+				<button	type='button' id='UploadButton' class='Button'>Upload</button>
+			</span>
+        </div>
+    </div>
+</div>
+<div id = 'inner-container'>
+    <div id = 'editor-container'>
+        <div id="editor">var welcome = 'Programming.';
+        </div>
+    </div>
+    <div id = 'chat-container'>
+        <video id='you' autoplay="true" style="width: 100%"></video>
+    </div>
+    <div id = 'console-container' style="overflow-y: scroll;">
+    </div>
+    <div id = 'tree-container-wrapper' data-toggle="context" data-target="#context-menu" style = 'z-index: 10'>
+        <div id = 'tree-container' style = 'z-index: 10'>
+            <div id = "file-tree">
+            </div>
+        </div>
+    </div>
+    <div id = 'userlist-container' style = 'z-index: 10'>
+    </div>
+</div>
+<div id = 'toolBox' style = 'display: none; position: absolute'>
+    <button id = 'compile' class="btn btn-danger"><i class="icon-white icon-play"></i>compile</button>
+    <button id = 'save' class="btn btn-success"><i class="icon-white icon-hdd"></i>Save</button>
+    <input type = 'text' id ='chatMessage' />
+    <button id = 'send' class="btn btn-success">send</button>
+</div>
+<div class = 'cursor-follower' style = 'width:3px;height:10px;background: red;position:absolute;display: none'></div>
+

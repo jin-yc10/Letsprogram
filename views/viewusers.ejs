@@ -1,0 +1,31 @@
+<% users.forEach(function(user, index) {
+  if (index % 4 == 0) { %>
+    <div class="row">
+  <%} %>
+        <div class="span3">
+            <div class="well">
+                <%if (kick){%>
+                    <h3><a href="/u/<%= user %>"><%= user%></a></h3>
+                    <button class="btn btn-danger" name="kick" value=<%=index%>>Kick out!</button>
+                <%} else if(invite){%>
+                    <h3><a href="/u/<%= user.name %>"><%= user.name%></a></h3>
+                    <button class="btn btn-success" name="invite" value=<%=user.name%>>Add to team!</button>
+                <%} else{ %>
+                    <h3><a href="/u/<%= user.name %>"><%= user.name%></a></h3>
+                <%}%>
+            </div>
+        </div>
+  <% if (index % 4 == 3) { %>
+    </div><!-- end row -->
+  <% } %>
+<%}) %>
+
+<% if (users.length % 4 != 0) { %>
+  </div><!-- end row -->
+<%} %>
+<% if (users.length!=0){%>
+    <%- partial('showpage',{pagenum:userPageNum,
+                        pageTotal:pageTotal,
+                        url:url})%>
+<%}%>
+
